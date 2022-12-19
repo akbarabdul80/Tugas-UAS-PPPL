@@ -17,7 +17,6 @@ public class SuccessCheckoutPage {
 
     private By orderNumber = By.className("order-number");
     private By orderTable = By.id("my-orders-table");
-
     private By tableBody = By.xpath("//*[@id=\"my-orders-table\"]/tbody");
     private By productName = By.className("product-item-name");
     private By productQty = By.className("items-qty");

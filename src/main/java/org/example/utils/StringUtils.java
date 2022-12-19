@@ -13,6 +13,5 @@ public class StringUtils {
         }
         java.lang.String saltStr = salt.toString();
         return saltStr;
-
     }
 }

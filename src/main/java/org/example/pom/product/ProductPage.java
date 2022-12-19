@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.example.pom.DashboardPage.getDataProducts;
+
 public class ProductPage {
     private WebDriver driver;
     private By switchSize = By.cssSelector(".swatch-option.text");
@@ -32,6 +34,8 @@ public class ProductPage {
     private By miniCartProductQty = By.className("item-qty");
 
     private By menMenu = By.cssSelector("level0.nav-3");
+    private By miniSubtitle = By.className("subtitle");
+
 
     private By menTopSubMenu = By.xpath("//*[@id=\"ui-id-2\"]/li[3]/ul");
 
@@ -95,15 +99,7 @@ public class ProductPage {
 
 
     public List<DataProduct> getCart() {
-        WebElement cart = wait.until(ExpectedConditions.visibilityOfElementLocated(miniCart));
-        List<WebElement> productList = cart.findElements(miniCartProduct);
-        List<DataProduct> dataProducts = new ArrayList<>();
-        for (WebElement product : productList) {
-            DataProduct dataProduct = new DataProduct(product.findElement(miniCartProductName).getText(), product.findElement(miniCartProductQty).getAttribute("value"));
-            dataProducts.add(dataProduct);
-        }
-        Collections.reverse(dataProducts);
-        return dataProducts;
+        return getDataProducts(wait, miniCart, miniCartProduct, miniCartProductName, miniCartProductQty);
     }
 
     public void hoverMenMenu() {
@@ -111,5 +107,10 @@ public class ProductPage {
         actions.moveToElement(menMenuElement).perform();
         actions.moveToElement(driver.findElement(menTopSubMenu)).perform();
         driver.findElement(menTopSubMenuItem).click();
+    }
+
+    public String getSubtitle() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(miniSubtitle));
+        return driver.findElement(miniSubtitle).getText();
     }
 }

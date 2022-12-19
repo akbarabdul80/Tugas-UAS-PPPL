@@ -109,7 +109,9 @@ class ProductPageTest {
 
         PaymentCheckoutPage paymentCheckoutPage = shippingCheckoutPage.clickNext();
 
-        boolean match = Pattern.compile("(.*)" + DataShipping.shipping_checkout_detail + "(.*)", Pattern.CASE_INSENSITIVE).matcher(paymentCheckoutPage.getBillingDetail()).find();
+        boolean match = Pattern
+                .compile("(.*)" + DataShipping.shipping_checkout_detail + "(.*)", Pattern.CASE_INSENSITIVE)
+                .matcher(paymentCheckoutPage.getBillingDetail()).find();
         assertTrue(match, "Shipping order detail");
         SuccessCheckoutPage successCheckoutPage = paymentCheckoutPage.clickSubmit();
         successCheckoutPage.clickOrderNumber();
@@ -130,9 +132,15 @@ class ProductPageTest {
 
     @Test
     @Order(5)
-    void testSignOutLogin() {
+    void testSignOut() {
         HomePage homePage = new HomePage(driver);
         homePage.clickSignOut();
+        assertEquals("You are signed out", homePage.getSignOutMessage());
+    }
+    @Test
+    @Order(6)
+    void testLogin() {
+        HomePage homePage = new HomePage(driver);
         LoginAccountPage loginAccountPage = homePage.clickLogin();
         String email = "akbarabdul10@gmail.com";
         String pass = "Password123";
@@ -141,5 +149,21 @@ class ProductPageTest {
         String userInfo = " John Doe " + email + " ";
         boolean match = Pattern.compile("(.*)" + userInfo + "(.*)", Pattern.CASE_INSENSITIVE).matcher(profileAccountPage.getBoxInformation()).find();
         assertTrue(match);
+    }
+
+    @Test
+    @Order(7)
+    void testRemoveAllCart() {
+        DashboardPage dashboardPage = new DashboardPage(driver);
+        dashboardPage.gotoDashboard();
+        ProductPage productPage = dashboardPage.clickProduct(2);
+        productPage.setQty(3);
+        productPage.setColor(0);
+        productPage.setSize(Cons.SIZE_M);
+        productPage.addToCart();
+
+        dashboardPage.clickCart();
+        dashboardPage.removeAllCart();
+        assertEquals("You have no items in your shopping cart.", productPage.getSubtitle());
     }
 }
